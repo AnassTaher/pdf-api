@@ -13,35 +13,22 @@ def extract_pdf_data(filename : str):
     # Extracting data from PDF
 
     filename = f"{filename}"
-    if not os.path.exists(f"{filename}.pdf"):
-        current_dir = "."
-        current_dir_files = os.listdir(current_dir)
-        return json.dumps({"error": "File not found", "files": current_dir_files}, indent=4)
+    current_dir = "mysite/"
+
+    if not os.path.exists(f"{current_dir}{filename}.pdf"):
+        return json.dumps({"error": "File not found", "files": os.listdir(current_dir)}, indent=4)
 
     
-    current_dir = "."
-    poppler_dir = ""
-    full_dir = ""
-    for f in os.listdir(current_dir):
-        if f.startswith("poppler-"):
-            poppler_dir = f
-            full_dir = f"./{f}/Library/bin"
-            break
+
     
     pages = None
     try:
-        pages = convert_from_path(f"{filename}.pdf", 500, poppler_path=full_dir)
+        pages = convert_from_path(f"{filename}.pdf", 500)
     except Exception as e:
         info_obj = {
             "error": str(e),
-            "full_dir": full_dir,
-            "files": os.listdir(full_dir)
         }
-        # for f in os.listdir(current_dir):
-        #     if f.startswith("poppler-"):
-        #         info_obj["poppler_dir_files"] = os.listdir(f"{current_dir}/{f}/Library")
-        #         info_obj["poppler_dir_files_bin"] = os.listdir(f"{current_dir}/{f}/Library/bin")
-        #         break
+
         return json.dumps(info_obj, indent=4)
     image_file_path = f"{filename}.jpg"
     for count, page in enumerate(pages):
