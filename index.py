@@ -16,7 +16,12 @@ def extract_pdf_data(filename : str):
     current_dir = "mysite/"
 
     if not os.path.exists(f"{current_dir}{filename}.pdf"):
-        return json.dumps({"error": "File not found", "files": os.listdir(current_dir)}, indent=4)
+        return json.dumps({
+            "error": "File not found", 
+            "files": os.listdir(current_dir), 
+            "path": current_dir + filename}
+        )
+    
 
     
 
