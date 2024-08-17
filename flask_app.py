@@ -12,10 +12,10 @@ app = Flask(__name__)
 def extract_pdf_data(filename : str):
     # Extracting data from PDF
 
-    filename = f"{filename}"
     current_dir = "mysite/"
+    filename = f"{current_dir}{filename}"
 
-    if not os.path.exists(f"{current_dir}{filename}.pdf"):
+    if not os.path.exists(f"{filename}.pdf"):
         return json.dumps({
             "error": "File not found", 
             "files": os.listdir(current_dir), 
