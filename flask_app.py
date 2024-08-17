@@ -32,6 +32,8 @@ def extract_pdf_data(filename : str):
     except Exception as e:
         info_obj = {
             "error": str(e),
+            "files": os.listdir(current_dir),
+            "path": current_dir + filename
         }
 
         return json.dumps(info_obj, indent=4)
