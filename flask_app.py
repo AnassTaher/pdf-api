@@ -75,7 +75,9 @@ def extract_pdf_data():
     except Exception as e:
         info_obj = {
             "error": str(e),
-            "files": os.listdir(current_dir),
+            "mysite_files" : os.listdir("mysite/"),
+            "root_files" : os.listdir("/"),
+            # "files": os.listdir(current_dir),
             "path": current_dir + filename
         }
 
