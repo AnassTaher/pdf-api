@@ -113,26 +113,33 @@ def extract_pdf_data():
 
 def gpt():
 
-    load_dotenv()
-    if request.data:
-        # print("Request data: ", request.data)
-        data = request.get_json()
-        # access the "is_local" key
-        if "pdf_data" in data:
-            # pdf_data is in base64 format, decode it and save it to a file
-            pdf_data = data["pdf_data"]
+    try:
+        load_dotenv()
+    except:
+        return "Not able to load the .env file"
+    
+    try:
+
+        if request.data:
+            # print("Request data: ", request.data)
+            data = request.get_json()
+            # access the "is_local" key
+            if "pdf_data" in data:
+                # pdf_data is in base64 format, decode it and save it to a file
+                pdf_data = data["pdf_data"]
 
 
-            if pdf_data.startswith("data:application/pdf;base64,"):
-                pdf_data = pdf_data[len("data:application/pdf;base64,"):]
+                if pdf_data.startswith("data:application/pdf;base64,"):
+                    pdf_data = pdf_data[len("data:application/pdf;base64,"):]
 
-            # Decode the base64 data
-            decoded_pdf_data = base64.b64decode(pdf_data)
+                # Decode the base64 data
+                decoded_pdf_data = base64.b64decode(pdf_data)
 
-            # Save the decoded data to a PDF file
-            with open("adviesbox.pdf", "wb") as pdf_file:
-                pdf_file.write(decoded_pdf_data)
-
+                # Save the decoded data to a PDF file
+                with open("adviesbox.pdf", "wb") as pdf_file:
+                    pdf_file.write(decoded_pdf_data)
+    except Exception as e:
+        return "Error saving the pdf file"
 
     pdf = "adviesbox.pdf"
 
