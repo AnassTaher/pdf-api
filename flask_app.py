@@ -110,7 +110,9 @@ def extract_pdf_data():
 
 def gpt():
 
-    load_dotenv()
+    project_folder = os.path.expanduser('~/my-site')  # adjust as appropriate
+    load_dotenv(os.path.join(project_folder, '.env'))
+    # load_dotenv()
     api_key = os.getenv("API_KEY")
     print(api_key)
     return api_key
