@@ -20,10 +20,7 @@ from langchain_community.document_loaders import PyPDFLoader
 
 app = Flask(__name__)
 CORS(app)
-load_dotenv()
-client = OpenAI(
-    api_key=os.getenv("API_KEY")
-    )
+
 
 
 def extract_pdf_data():
@@ -113,10 +110,14 @@ def extract_pdf_data():
 
 def gpt():
 
-
     load_dotenv()
+    api_key = os.getenv("API_KEY")
+    print(api_key)
+    return api_key
+    client = OpenAI(
+        api_key=os.getenv("API_KEY")
+    )
 
-    
     try:
 
         if request.data:
