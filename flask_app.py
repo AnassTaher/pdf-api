@@ -113,10 +113,9 @@ def extract_pdf_data():
 
 def gpt():
 
-    try:
-        load_dotenv()
-    except:
-        return "Not able to load the .env file"
+
+    load_dotenv()
+
     
     try:
 
