@@ -135,8 +135,20 @@ def gpt():
 
 
     pdf = "adviesbox.pdf"
-    loader = PyPDFLoader(pdf)
-    documents = loader.load()
+
+    loader = None
+    try:
+        loader = PyPDFLoader(pdf)
+    except Exception as e:
+        return "Error loading the pdf file"
+    
+    documents = None
+    try:
+        documents = loader.load()
+    except Exception as e:
+        return "Error loading the documents"
+
+
     question = """
     In het document, is het een huurwoning? Zo ja, wat is de huurprijs per maand. Zo niet, beantwoord deze vragen met behulp van sectie 2.1 in het document: Is de woning bedoeld voor blijven te wonen(primaire woning) of verkoop of verhuur? Is de woning verkocht? Wat is de verwachte verkoopwaarde(marktwaarde)? Wat zijn de verkoopkosten? Wat is de WOZ-waarde? Geef een json object terug met de volgende template:{ "type": string ("eigen", "huur", "inwonend"), "huurprijs" : int, "doel_woning": string, ("wonen", "verkoop", "verhuur") "is_verkocht": Boolean, "verkoopwaarde": int, "verkoopkosten": int, "woz" : int }. Gebruik geen text of iets, het enige wat ik wil krijgen is het json object, zonder apostrophe erbij(`). Dit zal worden gebruiktt in een API request dus ik moet het direct kunnen gebruiken als json object in python
     """
