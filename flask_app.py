@@ -48,7 +48,6 @@ def extract_pdf_data():
     current_dir = ""
     filename = "output"
 
-
     pages = None
     try:
         pages = convert_from_path(f"{filename}.pdf", 500)
@@ -97,13 +96,27 @@ def extract_pdf_data():
                         count = 1
             grid[i][j] = count
 
+    risico_data = scan_risico("output")
+
     dict_info = {
-        "data" : grid
+        "data" : grid,
+        "risico" : risico_data
     }
+
+    print("Grid: ")	
+    for i in range(len(grid)):
+        print(grid[i])
+
+    print("Risico: ")
+    for i in range(len(risico_data)):
+        print(risico_data[i])
+
 
     # delete the image file and pdf file
     os.remove(image_file_path)
-    os.remove("output.pdf")
+
+    if request.data:
+        os.remove("output.pdf")
 
     return json.dumps(dict_info)
 
@@ -188,6 +201,58 @@ def gpt():
 
     return woningsituatie
 
+
+def scan_risico(filename: str):
+
+    filename = f"{filename}"
+
+    pages = convert_from_path(f"{filename}.pdf", 500)
+
+    image_file_path = f"{filename}_2.jpg"
+    for count, page in enumerate(pages):
+        if count == 2:
+            page.save(image_file_path, 'JPEG')
+
+    im = Image.open(image_file_path)
+
+    crop_rectangle = (3280, 2880, 3890, 3900)
+    cropped_im = im.crop(crop_rectangle)
+
+    rows = 6
+    columns = 3
+
+    cell_width = cropped_im.size[0] // (columns)
+    cell_height = cropped_im.size[1] // (rows)
+
+    short = 90
+    tall = 250
+    cell_heights = [
+                    short, short, tall + 10, 
+                    short + 10, tall - 50, tall - 30
+                ]
+
+    grid = [[0] * columns for _ in range(rows)]
+
+    for i in range(rows):
+        for j in range(columns):
+            count = 0
+            for x in range(cell_width):
+                for y in range(cell_heights[i]):
+                    pixel = cropped_im.getpixel((j * cell_width + x, sum(cell_heights[:i]) + y))
+                    # pixel returns a RGB tuple (r, g, b)
+                    is_black = True
+                    for p in pixel:
+                        if p > 0:
+                            is_black = False
+                            break
+                    if is_black:
+                        count = 1
+            grid[i][j] = count
+
+    os.remove(image_file_path)
+
+    return grid
+
 @app.route('/')
 def home():
     return 'windows'
@@ -210,3 +275,4 @@ def main():
 if __name__ == '__main__':
     app.run(debug=True)
     # main()
+    # scan_risico("doc2")
