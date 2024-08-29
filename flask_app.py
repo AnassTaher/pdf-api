@@ -45,12 +45,12 @@ def extract_pdf_data():
             with open("output.pdf", "wb") as pdf_file:
                 pdf_file.write(decoded_pdf_data)
 
-    current_dir = ""
+    current_dir = "mysite/"
     filename = "output"
 
     pages = None
     try:
-        pages = convert_from_path(f"{filename}.pdf", 500)
+        pages = convert_from_path(f"{current_dir}{filename}.pdf", 500)
     except Exception as e:
         info_obj = {
             "error": str(e),
