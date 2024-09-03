@@ -1,0 +1,27 @@
+
+
+
+
+Following the upcoming file: answer these questions and put the answers in a json object with the following format:
+
+Gebruik de eerste pagina waar alles moet worden ingevuld.
+
+Wat is de totale inkomsten van u en uw partner?
+Wat zijn de huurlasten van u en uw partner?
+Wat zijn de kosten van levensonderhoud van u en uw partner?
+Wat is de maximale acceptable maandlast voor u?
+
+
+{
+    "totaal_inkomen" : Integer,
+    "huurlasten" : Integer,
+    "kosten_levendsonderhoud" : Integer,
+    "max_maandlast" : Integer,
+}
+
+Geef alleen een json object terug, zodat dit direct in een API kan worden gebruikt in python.
+
+Dit is het pdf:
+
+
+
